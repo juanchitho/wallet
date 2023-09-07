@@ -1,23 +1,37 @@
-import logo from './logo.svg';
+/* import logo from './logo.svg'; */
 import './App.css';
+import { useEffect } from 'react';
+import Login from './pages/Login';
+import Wallet from './pages/Wallet';
+import NotFound from './pages/NotFound';
+import supabase from './supabase/supabase';
+import { Routes , Route , useNavigate} from 'react-router-dom';
 
 function App() {
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+    if (!session) {
+      navigate('/login');
+    }else{
+      navigate('/wallet');
+    }
+  })
+    
+
+    }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/wallet" element={<Wallet />} />
+        <Route path="*" element={<NotFound />} />
+
+      </Routes>
+    
+
     </div>
   );
 }
