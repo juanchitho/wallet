@@ -9,9 +9,12 @@ function Transfer() {
         e.preventDefault();
         
         try{
+            const user = supabase.auth.getUser();
+            
             const result = await supabase.from('transfer').insert(
             {   monto: monto, 
-                email: email
+                email: email,
+                userId: user.id
             }
         )
         console.log(result);

@@ -6,6 +6,7 @@ import Wallet from './pages/Wallet';
 import NotFound from './pages/NotFound';
 import supabase from './supabase/supabase';
 import { Routes , Route , useNavigate} from 'react-router-dom';
+import { TransferContextProvider } from './context/TransferContex';
 
 function App() {
 
@@ -24,12 +25,14 @@ function App() {
     }, []);
   return (
     <div className="App">
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/wallet" element={<Wallet />} />
-        <Route path="*" element={<NotFound />} />
+      <TransferContextProvider>
+        <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/wallet" element={<Wallet />} />
+            <Route path="*" element={<NotFound />} />
 
-      </Routes>
+          </Routes>
+      </TransferContextProvider>
     
 
     </div>
