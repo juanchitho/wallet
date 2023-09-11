@@ -3,9 +3,14 @@ import supabase from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import Transfer from '../components/Transfer';
 
+import { useTransfer } from '../context/TransferContex';
+
 const Wallet = () => {
   const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
+  const {historial} = useTransfer();
+  console.log(historial);
+  
   useEffect(() => {
     if (!supabase.auth.getUser()) {
       navigate('/login');
