@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import supabase from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 import Transfer from '../components/Transfer';
+import TransferList from '../components/TransferList';
 
 import { useTransfer } from '../context/TransferContex';
 
@@ -9,7 +10,7 @@ const Wallet = () => {
   const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
   const {historial} = useTransfer();
-  console.log(historial);
+  //console.log(historial);
   
   useEffect(() => {
     if (!supabase.auth.getUser()) {
@@ -62,6 +63,8 @@ const Wallet = () => {
       <p>Saldo: ${balance}</p>
       <button onClick={() => addFunds(10)}>Agregar $10</button>
       <Transfer/>
+      <TransferList/>
+
     </div>
   );
 };
