@@ -10,7 +10,8 @@ const Wallet = () => {
   const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
   const {historial} = useTransfer();
-  //console.log(historial);
+  
+  console.log("este es el historial",historial);//me puede ser util para traerme el monto
   
   useEffect(() => {
     if (!supabase.auth.getUser()) {

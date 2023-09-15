@@ -7,10 +7,12 @@ import supabase from "../supabase/supabase";
 async function getUserIdByEmail(email) {
     try {
       const { data, error } = await supabase
-        .from('usuarios') // Asegúrate de que coincida con el nombre de tu tabla de usuarios
+        .from('usuarios')
         .select('userId')
         .eq('email', email)
         .single();
+
+        console.log("aca esta el userId",data);
   
       if (error) {
         throw error;
@@ -28,7 +30,9 @@ async function getUserIdByEmail(email) {
     }
   }
 
-// Resto del código de tu componente Transfer
+
+
+// Función para crear una transferencia(agrega una fila a la tabla de transfer)
 function Transfer() {
   const [monto, setMonto] = useState(0);
   const [email, setEmail] = useState("");
@@ -46,7 +50,7 @@ function Transfer() {
         const transferencia = {
           monto: monto,
           email: email,
-          senderUserId: user.data.user.id, // Reemplaza con el ID del usuario que envía la transferencia
+          userId: user.data.user.id, // Reemplaza con el ID del usuario que envía la transferencia
           receiverUserId: destinatarioUserId,
         };
 
