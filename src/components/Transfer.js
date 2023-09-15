@@ -1,28 +1,70 @@
 import { useState } from "react";
 import supabase from "../supabase/supabase";
 
-function Transfer() {
-    const [monto,setMonto] = useState(0);
-    const [email,setEmail] = useState("");
 
-    const handleSubmit = async (e) =>  {
-        e.preventDefault();
-        
-        try{
-            
-            
-            const result = await supabase.from('transfer').insert(
-            {   monto: monto, 
-                email: email,
-                
-            }
-        )
-        console.log(result);
-        } catch (error) {
-            console.error(error);
-        }
 
+// Función para obtener el userId a partir del correo electrónico
+async function getUserIdByEmail(email) {
+    try {
+      const { data, error } = await supabase
+        .from('usuarios') // Asegúrate de que coincida con el nombre de tu tabla de usuarios
+        .select('userId')
+        .eq('email', email)
+        .single();
+  
+      if (error) {
+        throw error;
+      }
+  
+      if (data) {
+        return data.userId; // El destinatario existe, devuelve su userId
+      } else {
+        console.error('El destinatario con el correo electrónico no existe.');
+        return null; // El destinatario no existe, devuelve null
+      }
+    } catch (error) {
+      console.error('Error al obtener el userId por correo electrónico:', error);
+      return null;
     }
+  }
+
+// Resto del código de tu componente Transfer
+function Transfer() {
+  const [monto, setMonto] = useState(0);
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Obtener el userId del destinatario
+      const destinatarioUserId = await getUserIdByEmail(email);
+      const user = await supabase.auth.getUser();
+
+      if (destinatarioUserId !== null) {
+        // Crear el objeto de transferencia con senderUserId y receiverUserId
+        const transferencia = {
+          monto: monto,
+          email: email,
+          senderUserId: user.data.user.id, // Reemplaza con el ID del usuario que envía la transferencia
+          receiverUserId: destinatarioUserId,
+        };
+
+        // Insertar la transferencia en la tabla de transferencias
+        const result = await supabase.from('transfer').insert([transferencia]);
+        console.log(result);
+      } else {
+        console.error('El destinatario no existe.');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  
+
+
+
 
     return (
         <div> 
