@@ -22,8 +22,8 @@ const Wallet = () => {
     // Obtiene el saldo de la billetera desde Supabase
     async function fetchBalance() {
       const { data, error } = await supabase
-        .from('wallet')
-        .select('balance')
+        .from('transfer')
+        .select('monto')
         .single();
 
       if (error) {
@@ -32,6 +32,7 @@ const Wallet = () => {
       }
 
       setBalance(data.balance);
+
     }
 
     fetchBalance();
@@ -44,7 +45,7 @@ const Wallet = () => {
     
       // Actualizar el saldo de la billetera en Supabase utilizando una cláusula WHERE
       const { error } = await supabase
-        .from('wallet')
+        .from('transfer')
         .update({ balance: balance + amount })
         .eq('id', walletId); // Establece la condición WHERE
     

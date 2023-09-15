@@ -1,6 +1,7 @@
 import { createContext , useContext , useState } from "react";
 import supabase from "../supabase/supabase";
 
+
 export const TransferContext = createContext();
 
 export const useTransfer = () => {
@@ -26,11 +27,28 @@ export const TransferContextProvider = ({children}) => {
         
 
         if (error) throw error;
+        
         setName(data);
+    }
+   /*  const createTransfer = async (monto,email) => {
+        try{
+            const user = await supabase.auth.getUser();
+            
+            const {error,data} = await supabase.from('transfer').insert(
+            {   monto: monto, 
+                email: email,
+                
+            }
+        );
+        if (error) throw error;
+        console.log(user.data)
+        console.log(data);
+        
+        } catch (error) {
+            console.error(error);
+        }    
 
-
-    }    
-
+    } */
     return (
         <TransferContext.Provider value={{ historial , getHistorial }} >
             {children}

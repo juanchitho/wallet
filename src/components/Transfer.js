@@ -10,14 +10,17 @@ function Transfer() {
         
         try{
             
-            
-            const result = await supabase.from('transfer').insert(
+            const user = await supabase.auth.getUser();
+            const {error , data} = await supabase.from('transfer').insert(
             {   monto: monto, 
                 email: email,
                 
             }
         )
-        console.log(result);
+        if (error) throw error;
+        console.log(data);
+        console.log(user.data)
+        
         } catch (error) {
             console.error(error);
         }
