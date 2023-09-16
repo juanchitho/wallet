@@ -1,5 +1,6 @@
 import { useState } from "react";
 import supabase from "../supabase/supabase";
+import { useTransfer } from "../context/TransferContex";
 
 
 
@@ -34,8 +35,10 @@ async function getUserIdByEmail(email) {
 
 // Función para crear una transferencia(agrega una fila a la tabla de transfer)
 function Transfer() {
+  const {setHistorialDesactualizado} = useTransfer();
   const [monto, setMonto] = useState(0);
   const [email, setEmail] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,13 +53,16 @@ function Transfer() {
         const transferencia = {
           monto: monto,
           email: email,
-          userId: user.data.user.id, // Reemplaza con el ID del usuario que envía la transferencia
+          //userId: user.data.user.id, // Reemplaza con el ID del usuario que envía la transferencia
           receiverUserId: destinatarioUserId,
         };
 
         // Insertar la transferencia en la tabla de transferencias
         const result = await supabase.from('transfer').insert([transferencia]);
         console.log(result);
+        if (result.error===null) {
+          setHistorialDesactualizado(true);
+        }
       } else {
         console.error('El destinatario no existe.');
       }

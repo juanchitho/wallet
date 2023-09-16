@@ -1,12 +1,14 @@
 import { useState ,useEffect} from "react";
 import supabase from "../supabase/supabase";
 import { useNavigate } from "react-router-dom";
+import { useTransfer } from "../context/TransferContex";
 
 
 function Login(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const {setHistorialDesactualizado} = useTransfer();
 
     useEffect(() => {
         if (!supabase.auth.getUser()) {
@@ -25,7 +27,9 @@ function Login(){
                 email,
                 password,
             })
+            setHistorialDesactualizado(true);
             console.log("pasoo el login");
+
         } catch (error) {
             console.error(error);
 
