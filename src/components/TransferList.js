@@ -3,13 +3,20 @@ import { useTransfer } from "../context/TransferContex";
 
 
 function TransferList() {
-        const {historial, getHistorial} = useTransfer();
+        const {historial, getHistorial,historialDesactualizado, setHistorialDesactualizado, setName} = useTransfer();
         
 
-
         useEffect(() => {
-            getHistorial();
-        }, [])
+            if (historialDesactualizado) {
+              async function traerHistorial() {
+                const result = await getHistorial();
+                console.log(result);
+                setName(result);
+                setHistorialDesactualizado(false);
+              }
+              traerHistorial();
+            }
+          }, [setName, historialDesactualizado, setHistorialDesactualizado]);
         
     return (
         <div>historial de movimientos

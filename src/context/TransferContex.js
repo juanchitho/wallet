@@ -13,44 +13,30 @@ export const useTransfer = () => {
 
 export const TransferContextProvider = ({children}) => {
     const [historial, setName] = useState([]);
-
+    const [historialDesactualizado, setHistorialDesactualizado] = useState(true);//para que se actualice el historial
+    //supabase.auth.onAuthStateChange(); ver!
     const getHistorial = async () => {
 
         const user = await supabase.auth.getUser();
-        //console.log("asi viene el objeto",user.data.user);//va acceder a la data del usuario y de ahi al id
+        console.log("asi viene el objeto",user.data.user);//va acceder a la data del usuario y de ahi al id
 
-        const {error,data} = await supabase
+        const {data , error} = await supabase
         .from('transfer')//de la tabla transfer
         .select()//selecciona todo
         .eq('userId', user.data.user.id)//donde el userId sea igual al id del usuario
-        .order('id', { ascending: true });//ordena por id de forma ascendente
+        .order('id', { ascending: false });//ordena por id de forma ascendente
         
+        
+       /*  console.log(data);
+        console.log(error);
+        console.log(historial); */
+        //if (error) throw error;
+       return data;
 
-        if (error) throw error;
-        
-        setName(data);
-    }
-   /*  const createTransfer = async (monto,email) => {
-        try{
-            const user = await supabase.auth.getUser();
-            
-            const {error,data} = await supabase.from('transfer').insert(
-            {   monto: monto, 
-                email: email,
-                
-            }
-        );
-        if (error) throw error;
-        console.log(user.data)
-        console.log(data);
-        
-        } catch (error) {
-            console.error(error);
-        }    
+    }    
 
-    } */
     return (
-        <TransferContext.Provider value={{ historial , getHistorial }} >
+        <TransferContext.Provider value={{ historial , getHistorial ,historialDesactualizado , setHistorialDesactualizado, setName}} >
             {children}
         </TransferContext.Provider>
     )
