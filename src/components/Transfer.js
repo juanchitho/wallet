@@ -4,6 +4,7 @@ import { useTransfer } from "../context/TransferContex";
 
 
 
+
 // Función para obtener el userId a partir del correo electrónico
 async function getUserIdByEmail(email) {
     try {

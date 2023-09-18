@@ -12,7 +12,8 @@ export const useTransfer = () => {
 
 export const TransferContextProvider = ({children}) => {
     const [historial, setName] = useState([]);
-    const [historialDesactualizado, setHistorialDesactualizado] = useState(false);//para que se actualice el historial
+    const [historialDesactualizado, setHistorialDesactualizado] = useState(true);//para que se actualice el historial
+    //supabase.auth.onAuthStateChange(); ver!
     const getHistorial = async () => {
 
         const user = await supabase.auth.getUser();
@@ -22,7 +23,7 @@ export const TransferContextProvider = ({children}) => {
         .from('transfer')//de la tabla transfer
         .select()//selecciona todo
         .eq('userId', user.data.user.id)//donde el userId sea igual al id del usuario
-        .order('id', { ascending: true });//ordena por id de forma ascendente
+        .order('id', { ascending: false });//ordena por id de forma ascendente
         
         
        /*  console.log(data);
