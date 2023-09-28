@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";//useState es un estado, en js es una variable
 import supabase from "../supabase/supabase";
 import { useNavigate } from "react-router-dom";
 import Transfer from "../components/Transfer";
